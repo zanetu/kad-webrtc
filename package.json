@@ -1,0 +1,38 @@
+{
+  "name": "kad-webrtc",
+  "version": "1.0.0",
+  "description": "webrtc transport for kad",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha test/**"
+  },
+  "keywords": [
+    "kad",
+    "dht",
+    "webrtc"
+  ],
+  "author": "omphalos",
+  "license": "GPL-3.0",
+  "peerDependencies": {
+    "kad": "^0.9.x"
+  },
+  "dependencies": {
+    "hat": "0.0.3",
+    "simple-peer": "^5.11.6",
+    "wrtc": "0.0.59"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
+  },
+  "optionalDependencies": {
+    "kad-localstorage": "0.0.5",
+    "ws": "^0.8.1"
+  }
+}
