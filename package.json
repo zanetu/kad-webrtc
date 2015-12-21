@@ -19,7 +19,7 @@
   "author": "omphalos",
   "license": "GPL-3.0",
   "peerDependencies": {
-    "kad": "^0.9.x"
+    "kad": "^1.1.0-beta.2"
   },
   "dependencies": {
     "hat": "0.0.3",
