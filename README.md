@@ -7,7 +7,7 @@ Setup
 -----
 
 ```
-npm install kad kad-webrtc
+npm install kad@1.1.0-beta.2 kad-webrtc
 ```
 
 Usage
@@ -19,9 +19,9 @@ var WebRTC = require('kad-webrtc');
 
 var dht = new Node({
   // ...
-  transport: WebRTC,
-  nick: 'mynickname',
-  signaller: SignalServer // see examples
+  transport: WebRTC({ nick: 'mynickname' }, {
+    signaller: SignalServer // see examples
+  })
 });
 
 dht.connect({ nick: 'somebody' }, function(err) {
