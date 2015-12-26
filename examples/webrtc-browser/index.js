@@ -1,7 +1,6 @@
 'use strict';
 
 var kademlia = require('kad');
-var KadLocalStorage = require('kad-localstorage');
 var EventEmitter = require('events').EventEmitter;
 var WebRTC = require('../..');
 
@@ -11,13 +10,13 @@ var signaller = new EventEmitter();
 // Create our first node
 var node1 = new kademlia.Node({
   transport: new WebRTC({ nick: 'node1' }, { signaller: signaller }),
-  storage: new KadLocalStorage('node1')
+  storage: new kademlia.storage.LocalStorage('node1')
 });
 
 // Create a second node
 var node2 = new kademlia.Node({
   transport: new WebRTC({ nick: 'node2' }, { signaller: signaller }),
-  storage: new KadLocalStorage('node2')
+  storage: new kademlia.storage.LocalStorage('node2')
 });
 
 node2.on('connect', onConnect);

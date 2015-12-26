@@ -1,7 +1,6 @@
 'use strict';
 
 var kademlia = require('kad');
-var KadLocalStorage = require('kad-localstorage');
 var WebRTC = require('../..');
 var webSocket = require('./web-socket');
 var SignalClient = require('./signal-client');
@@ -14,13 +13,13 @@ webSocket.on('open', function() {
   // Create our first node
   var node1 = new kademlia.Node({
     transport: new WebRTC({ nick: 'node1' }, { signaller: signalClient1 }),
-    storage: new KadLocalStorage('node1')
+    storage: new kademlia.storage.LocalStorage('node1')
   });
 
   // Create a second node
   var node2 = new kademlia.Node({
     transport: new WebRTC({ nick: 'node2' }, { signaller: signalClient2 }),
-    storage: new KadLocalStorage('node2')
+    storage: new kademlia.storage.LocalStorage('node2')
   });
 
   node2.on('connect', onConnect);

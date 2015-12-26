@@ -6,7 +6,6 @@ var kademlia = require('kad');
 var levelup = require('levelup');
 var EventEmitter = require('events').EventEmitter;
 var wrtc = require('wrtc');
-var memdown = require('memdown');
 var WebRTC = require('../..');
 
 // The two nodes share a signaller
@@ -18,7 +17,7 @@ var node1 = new kademlia.Node({
     signaller: signaller,
     wrtc: wrtc // When running in Node, we have to pass the wrtc package
   }),
-  storage: levelup('node1', { db: memdown })
+  storage: new kademlia.storage.MemStore()
 });
 
 // Create a second node
@@ -27,7 +26,7 @@ var node2 = new kademlia.Node({
     signaller: signaller,
     wrtc: wrtc // When running in Node, we have to pass the wrtc package
   }),
-  storage: levelup('node2', { db: memdown }),
+  storage: new kademlia.storage.MemStore(),
   seeds: [{ nick: 'node1' }] // Connect to the first node
 });
 
