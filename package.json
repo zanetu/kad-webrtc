@@ -1,6 +1,6 @@
 {
   "name": "kad-webrtc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "webrtc transport for kad",
   "main": "index.js",
   "directories": {
