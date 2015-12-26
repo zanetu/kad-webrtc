@@ -34,6 +34,6 @@ Examples
 
 To build the examples, run `npm run build-examples`.
 
-After that, look at the READMEs in each file
+After that, look at the READMEs in each example directory
 to see how to run them.
 
