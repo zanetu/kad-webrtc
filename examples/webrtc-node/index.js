@@ -6,30 +6,34 @@ var kademlia = require('kad');
 var levelup = require('levelup');
 var EventEmitter = require('events').EventEmitter;
 var wrtc = require('wrtc');
+var memdown = require('memdown');
+var WebRTC = require('../..');
 
 // The two nodes share a signaller
 var signaller = new EventEmitter();
 
 // Create our first node
-var node1 = kademlia({
-  transport: kademlia.transports.WebRTC,
-  nick: 'node1',
-  signaller: signaller,
-  storage: levelup('node1'),
-  wrtc: wrtc // When running in Node, we have to pass the wrtc package
+var node1 = new kademlia.Node({
+  transport: WebRTC({ nick: 'node1' }, {
+    signaller: signaller,
+    wrtc: wrtc // When running in Node, we have to pass the wrtc package
+  }),
+  storage: levelup('node1', { db: memdown })
 });
 
 // Create a second node
-var node2 = kademlia({
-  transport: kademlia.transports.WebRTC,
-  nick: 'node2',
-  signaller: signaller,
-  storage: levelup('node2'),
-  seeds: [{ nick: 'node1' }], // Connect to the first node
-  wrtc: wrtc // When running in Node, we have to pass the wrtc package
+var node2 = new kademlia.Node({
+  transport: WebRTC({ nick: 'node2' }, {
+    signaller: signaller,
+    wrtc: wrtc // When running in Node, we have to pass the wrtc package
+  }),
+  storage: levelup('node2', { db: memdown }),
+  seeds: [{ nick: 'node1' }] // Connect to the first node
 });
 
 node2.on('connect', onNode2Ready);
+
+node2.connect({ nick: 'node1' });
 
 function onNode2Ready() {
   node1.put('beep', 'boop', onPut);
@@ -41,4 +45,5 @@ function onPut(err) {
 
 function onGet(err, value) {
   console.log(value); // 'boop'
+  process.exit();
 }

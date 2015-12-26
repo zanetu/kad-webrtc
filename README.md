@@ -28,3 +28,12 @@ dht.connect({ nick: 'somebody' }, function(err) {
   console.log('party!');
 });
 ```
+
+Examples
+--------
+
+To build the examples, run `npm run build-examples`.
+
+After that, look at the READMEs in each file
+to see how to run them.
+
