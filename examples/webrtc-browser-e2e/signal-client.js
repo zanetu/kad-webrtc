@@ -24,8 +24,8 @@ function SignalClient(nick) {
 
   webSocket.on('message', function(message) {
     var parsed = JSON.parse(message);
-    if(nick !== parsed.sender) {
-      EventEmitter.prototype.emit.call(signalClient, nick, parsed);
+    if(nick === parsed.recipient) {
+      EventEmitter.prototype.emit.call(signalClient, nick, parsed.message);
     }
   });
 }

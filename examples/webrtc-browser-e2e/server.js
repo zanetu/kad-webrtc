@@ -23,7 +23,7 @@ ws.on('connection', function(connection) {
 
     var parsed = JSON.parse(data);
     if(parsed.recipient && parsed.message) {
-      return signaller.emit(parsed.recipient, parsed.message);
+      return signaller.emit(parsed.recipient, parsed);
     }
 
     signaller.on(parsed.announceNick, function(message) {
