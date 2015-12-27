@@ -9,13 +9,17 @@ var signaller = new EventEmitter();
 
 // Create our first node
 var node1 = new kademlia.Node({
-  transport: new WebRTC({ nick: 'node1' }, { signaller: signaller }),
+  transport: new WebRTC(new WebRTC.Contact({
+    nick: 'node1'
+  }), { signaller: signaller }),
   storage: new kademlia.storage.LocalStorage('node1')
 });
 
 // Create a second node
 var node2 = new kademlia.Node({
-  transport: new WebRTC({ nick: 'node2' }, { signaller: signaller }),
+  transport: new WebRTC(new WebRTC.Contact({
+    nick: 'node2'
+  }), { signaller: signaller }),
   storage: new kademlia.storage.LocalStorage('node2')
 });
 

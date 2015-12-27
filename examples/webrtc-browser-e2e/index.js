@@ -12,13 +12,17 @@ webSocket.on('open', function() {
 
   // Create our first node
   var node1 = new kademlia.Node({
-    transport: new WebRTC({ nick: 'node1' }, { signaller: signalClient1 }),
+    transport: new WebRTC(new WebRTC.Contact({
+      nick: 'node1'
+    }), { signaller: signalClient1 }),
     storage: new kademlia.storage.LocalStorage('node1')
   });
 
   // Create a second node
   var node2 = new kademlia.Node({
-    transport: new WebRTC({ nick: 'node2' }, { signaller: signalClient2 }),
+    transport: new WebRTC(new WebRTC.Contact({
+      nick: 'node2'
+    }), { signaller: signalClient2 }),
     storage: new kademlia.storage.LocalStorage('node2')
   });
 

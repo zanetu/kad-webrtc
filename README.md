@@ -7,7 +7,7 @@ Setup
 -----
 
 ```
-npm install kad@1.1.0-beta.2 kad-webrtc
+npm install kad@1.2.0-beta kad-webrtc
 ```
 
 Usage
@@ -19,7 +19,7 @@ var WebRTC = require('kad-webrtc');
 
 var dht = new Node({
   // ...
-  transport: WebRTC({ nick: 'mynickname' }, {
+  transport: WebRTC(WebRTC.Contact({ nick: 'mynickname' }), {
     signaller: SignalServer // see examples
   })
 });
@@ -36,4 +36,3 @@ To build the examples, run `npm run build-examples`.
 
 After that, look at the READMEs in each example directory
 to see how to run them.
-
