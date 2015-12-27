@@ -13,7 +13,9 @@ var signaller = new EventEmitter();
 
 // Create our first node
 var node1 = new kademlia.Node({
-  transport: WebRTC({ nick: 'node1' }, {
+  transport: WebRTC(new WebRTC.Contact({
+    nick: 'node1'
+  }), {
     signaller: signaller,
     wrtc: wrtc // When running in Node, we have to pass the wrtc package
   }),
@@ -22,7 +24,9 @@ var node1 = new kademlia.Node({
 
 // Create a second node
 var node2 = new kademlia.Node({
-  transport: WebRTC({ nick: 'node2' }, {
+  transport: WebRTC(new WebRTC.Contact({
+    nick: 'node2'
+  }), {
     signaller: signaller,
     wrtc: wrtc // When running in Node, we have to pass the wrtc package
   }),

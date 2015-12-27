@@ -17,39 +17,39 @@ describe('Transports/WebRTC', function() {
 
     it('should create an instance with the `new` keyword', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       expect(rpc).to.be.instanceOf(RPC);
     });
 
     it('should create an instance without the `new` keyword', function() {
       var signaller = new EventEmitter();
-      var rpc = RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       expect(rpc).to.be.instanceOf(RPC);
     });
 
     it('should throw without options', function() {
       expect(function() {
         RPC(null);
-      }).to.throw(Error, 'Invalid options were supplied');
+      }).to.throw(Error, 'Invalid contact supplied');
     });
 
     it('should throw without signaller', function() {
       expect(function() {
-        RPC({ nick: 'a' }, {});
+        RPC(WebRTCContact({ nick: 'a' }), {});
       }).to.throw(Error, 'Invalid signaller was supplied');
     });
 
     it('should bind to the signaller', function() {
       var signaller = new EventEmitter();
       var addListener = sinon.stub(signaller, 'addListener');
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       expect(addListener.callCount).to.equal(1);
       expect(addListener.calledWith('a', rpc._signalHandler)).to.equal(true);
     });
 
     it('should emit a ready event', function(done) {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       rpc.on('ready', done);
     });
   });
@@ -59,7 +59,7 @@ describe('Transports/WebRTC', function() {
     it('should create a new peer', function(done) {
       var signaller = new EventEmitter();
       var handshakeID = hat();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var neighbor = new SimplePeer({ wrtc: wrtc, initiator: true });
       neighbor.on('signal', function(signal) {
         var message = { signal: signal, handshakeID: handshakeID, sender: 'b' };
@@ -74,7 +74,7 @@ describe('Transports/WebRTC', function() {
     it('should signal a new peer', function() {
       var signaller = new EventEmitter();
       var handshakeID = hat();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var signalStub = sinon.stub();
       sinon.stub(rpc, '_createPeer', function() {
         return { once: sinon.stub(), signal: signalStub };
@@ -86,7 +86,7 @@ describe('Transports/WebRTC', function() {
     it('should signal an existing peer', function() {
       var signaller = new EventEmitter();
       var handshakeID = hat();
-      var rpc = new RPC({ nick: 'a'}, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a'}), { signaller: signaller });
       rpc._createPeer('a', handshakeID, true);
       var peer = rpc._peers[handshakeID];
       var signalStub = sinon.stub(peer, 'signal');
@@ -100,7 +100,7 @@ describe('Transports/WebRTC', function() {
 
     it('should forward the peer\'s signals to the signaller', function(done) {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var handshakeID = hat();
       var peer = rpc._createPeer('b', handshakeID, true);
       signaller.once('b', function(message) {
@@ -112,7 +112,7 @@ describe('Transports/WebRTC', function() {
 
     it('should log the peer\'s errors', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var handshakeID = hat();
       var peer = rpc._createPeer('b', handshakeID, true);
       var error = sinon.stub(rpc._log, 'error');
@@ -125,7 +125,7 @@ describe('Transports/WebRTC', function() {
 
     it('should remove the peer\'s listeners when closed', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var handshakeID = hat();
       var peer = rpc._createPeer('b', handshakeID, true);
 
@@ -149,7 +149,7 @@ describe('Transports/WebRTC', function() {
 
     it('should add the peer to the collection', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var handshakeID = hat();
       var peer = rpc._createPeer('b', handshakeID, true);
       expect(rpc._peers[handshakeID]).to.equal(peer);
@@ -159,7 +159,7 @@ describe('Transports/WebRTC', function() {
   describe('#_createContact', function() {
     it('should create a WebRTCContact', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var contact = rpc._createContact({ nick: 'b' });
       expect(contact).to.be.instanceOf(WebRTCContact);
     });
@@ -172,8 +172,8 @@ describe('Transports/WebRTC', function() {
 
     before(function() {
       var signaller = new EventEmitter();
-      rpc1 = new RPC({ nick: 'a' }, { signaller: signaller });
-      rpc2 = new RPC({ nick: 'b' }, { signaller: signaller });
+      rpc1 = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
+      rpc2 = new RPC(WebRTCContact({ nick: 'b' }), { signaller: signaller });
     });
 
     after(function() {
@@ -222,8 +222,8 @@ describe('Transports/WebRTC', function() {
 
     it('should transmit a message', function(done) {
       var signaller = new EventEmitter();
-      var rpc1 = new RPC({ nick: 'a' }, { signaller: signaller });
-      var rpc2 = new RPC({ nick: 'b' }, { signaller: signaller });
+      var rpc1 = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
+      var rpc2 = new RPC(WebRTCContact({ nick: 'b' }), { signaller: signaller });
       var message = new Message({
         method: 'PING',
         params: { contact: rpc2._contact }
@@ -240,7 +240,7 @@ describe('Transports/WebRTC', function() {
     it('should destroy the underlying peers', function() {
       var signaller = new EventEmitter();
       var handshakeID = hat();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       rpc._createPeer('a', handshakeID, true);
       var peer = rpc._peers[handshakeID];
       var destroy = sinon.stub(peer, 'destroy');
@@ -252,7 +252,7 @@ describe('Transports/WebRTC', function() {
     it('should unsusbcribe from the signaller', function() {
       var signaller = new EventEmitter();
       var handshakeID = hat();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var removeListener = sinon.stub(signaller, 'removeListener');
       rpc._createPeer('a', handshakeID, true);
       rpc.close();
@@ -261,7 +261,7 @@ describe('Transports/WebRTC', function() {
     });
   });
 
-  describe('#_handleMessage', function() {
+  describe('#receive', function() {
 
     var contact1 = new WebRTCContact({ nick: 'a' });
     var validMsg1 = Message({
@@ -275,20 +275,20 @@ describe('Transports/WebRTC', function() {
     }).serialize();
     var invalidMsg = Buffer(JSON.stringify({ type: 'WRONG', params: {} }));
     var invalidJSON = Buffer('i am a bad message');
-    var rpc = new RPC({ nick: 'b' }, { signaller: new EventEmitter() });
+    var rpc = new RPC(WebRTCContact({ nick: 'b' }), { signaller: new EventEmitter() });
 
     it('should drop the message if invalid JSON', function(done) {
       rpc.once('MESSAGE_DROP', function() {
         done();
       });
-      rpc._handleMessage(invalidJSON, {});
+      rpc.receive(invalidJSON, {});
     });
 
     it('should drop the message if invalid message type', function(done) {
       rpc.once('MESSAGE_DROP', function() {
         done();
       });
-      rpc._handleMessage(invalidMsg, {});
+      rpc.receive(invalidMsg, {});
     });
 
     it('should emit the message type if not a reply', function(done) {
@@ -296,7 +296,7 @@ describe('Transports/WebRTC', function() {
         expect(typeof data).to.equal('object');
         done();
       });
-      rpc._handleMessage(validMsg1, { address: '127.0.0.1', port: 1234 });
+      rpc.receive(validMsg1, { address: '127.0.0.1', port: 1234 });
     });
 
     it('should call the message callback if a reply', function(done) {
@@ -307,7 +307,7 @@ describe('Transports/WebRTC', function() {
           done();
         }
       };
-      rpc._handleMessage(validMsg2, { address: '127.0.0.1', port: 1234 });
+      rpc.receive(validMsg2, { address: '127.0.0.1', port: 1234 });
     });
 
   });
@@ -316,7 +316,7 @@ describe('Transports/WebRTC', function() {
 
     it('should call expired handler with error and remove it', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var freshHandler = sinon.stub();
       var staleHandler = sinon.spy();
       rpc._pendingCalls.rpc_id_1 = {
@@ -340,7 +340,7 @@ describe('Transports/WebRTC', function() {
 
     it('should clean up the peers', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var peer = rpc._createPeer();
       rpc._close();
       expect(peer.destroyed).to.equal(true);
@@ -349,7 +349,7 @@ describe('Transports/WebRTC', function() {
 
     it('should unsusbcribe from the signaller', function() {
       var signaller = new EventEmitter();
-      var rpc = new RPC({ nick: 'a' }, { signaller: signaller });
+      var rpc = new RPC(WebRTCContact({ nick: 'a' }), { signaller: signaller });
       var removeListener = sinon.stub(signaller, 'removeListener');
       rpc._close();
       expect(removeListener.calledWith('a', rpc._signalHandler)).to.equal(true);

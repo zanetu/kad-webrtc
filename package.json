@@ -1,6 +1,6 @@
 {
   "name": "kad-webrtc",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "webrtc transport for kad",
   "main": "index.js",
   "directories": {
@@ -22,7 +22,7 @@
   "author": "omphalos",
   "license": "GPL-3.0",
   "peerDependencies": {
-    "kad": "^1.1.0-beta.2"
+    "kad": "1.2.0-beta"
   },
   "repository": {
     "type": "git",
