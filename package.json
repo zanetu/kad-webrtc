@@ -1,6 +1,6 @@
 {
   "name": "kad-webrtc",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "description": "webrtc transport for kad",
   "main": "index.js",
   "directories": {
@@ -21,24 +21,19 @@
   ],
   "author": "omphalos",
   "license": "GPL-3.0",
-  "peerDependencies": {
-    "kad": "1.2.0-beta"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/omphalos/kad-webrtc"
   },
   "dependencies": {
+    "kad": "1.2.1",
     "hat": "0.0.3",
-    "simple-peer": "^5.11.6",
-    "wrtc": "0.0.59"
+    "simple-peer": "^5.11.6"
   },
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
-    "sinon": "^1.17.2"
-  },
-  "optionalDependencies": {
+    "sinon": "^1.17.2",
     "browserify": "^11.1.0",
     "ws": "^0.8.1"
   }
